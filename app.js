@@ -312,12 +312,13 @@ const stickyText = document.getElementById("stickyCartText");
 const itemCount = Object.keys(cart).length;
 
 if (itemCount > 0) {
-  stickyBar.classList.remove("hidden");
+  stickyBar.style.display = "block";
   stickyText.innerText =
     "🛒 " + itemCount + " items | Total ₹" + total;
 } else {
-  stickyBar.classList.add("hidden");
+  stickyBar.style.display = "none";
 }
+
 
 }
 
@@ -407,6 +408,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
