@@ -212,11 +212,19 @@ function renderMenu(rows) {
     const price = r.c[2]?.v;
     const unit = r.c[3]?.v;
     const available = r.c[4]?.v;
+    const image = r.c[5]?.v || "placeholder.png";
 
     if (available !== "yes") return;
 
     menuDiv.innerHTML += `
       <div class="product-card">
+        <img
+          src="images/${image}"
+          class="product-image"
+          alt="${item}"
+          onerror="this.src='images/placeholder.png'"
+        />
+
         <div class="product-info">
           <div class="product-name">${item}</div>
           <div class="product-category">${category}</div>
@@ -359,6 +367,7 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
 
