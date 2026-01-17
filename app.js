@@ -18,51 +18,6 @@ const shops = {
     whatsapp: "918904220620"
   }
 };
-function trackOrderIntent(itemsText, total, pickupTime) {
-   console.log("🔥 trackOrderIntent called");
-  const formUrl =
-    "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
-
-  const data = new FormData();
-  data.append("entry.376479344", new Date().toISOString()); // timestamp
-  data.append("entry.361876883", shopKey);                 // shop_key
-  data.append("entry.1677708277", shop.name);               // shop_name
-  data.append("entry.1711734285", shop.location);           // city
-  data.append("entry.1764806945", itemsText);               // items
-  data.append("entry.777888999", total);                   // total
-  data.append("entry.1552637072", pickupTime);              // pickup_time
-  data.append("entry.1587844795", currentLang);             // language
-
-  fetch(formUrl, {
-    method: "POST",
-    mode: "no-cors",
-    body: data
-  });
-}
-function initShopDropdown() {
-  const select = document.getElementById("shopSelect");
-  if (!select) return;
-
-  select.value = currentShopKey;
-}
-function onShopChange(shopKey) {
-  if (!shops[shopKey]) return;
-
-  currentShopKey = shopKey;
-  shop = shops[shopKey];
-
-  // reset cart when shop changes
-  for (let key in cart) delete cart[key];
-
-  renderShopInfo();
-  renderCart();
-  loadMenu();
-
-  // update URL (nice UX)
-  const newUrl =
-    window.location.pathname + "?shop=" + shopKey;
-  window.history.replaceState({}, "", newUrl);
-}
 
 // ===============================
 // READ SHOP FROM URL
@@ -75,9 +30,61 @@ function getShopKey() {
 let currentShopKey = getShopKey();
 let shop = shops[currentShopKey] || shops.kk;
 
+// ===============================
+// ORDER INTENT TRACKING
+// ===============================
+function trackOrderIntent(itemsText, total, pickupTime) {
+  console.log("🔥 trackOrderIntent called");
+
+  const formUrl =
+    "https://docs.google.com/forms/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
+
+  const data = new FormData();
+  data.append("entry.376479344", new Date().toISOString()); // timestamp
+  data.append("entry.361876883", currentShopKey);           // shop_key
+  data.append("entry.1677708277", shop.name);               // shop_name
+  data.append("entry.1711734285", shop.location);           // city
+  data.append("entry.1764806945", itemsText);               // items
+  data.append("entry.205186095", total);                    // total ✅
+  data.append("entry.1552637072", pickupTime);              // pickup_time
+  data.append("entry.1587844795", currentLang);             // language
+
+  fetch(formUrl, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+}
 
 // ===============================
-// GOOGLE SHEET (SAME FOR ALL)
+// SHOP DROPDOWN
+// ===============================
+function initShopDropdown() {
+  const select = document.getElementById("shopSelect");
+  if (!select) return;
+  select.value = currentShopKey;
+}
+
+function onShopChange(shopKey) {
+  if (!shops[shopKey]) return;
+
+  currentShopKey = shopKey;
+  shop = shops[shopKey];
+
+  // reset cart
+  for (let key in cart) delete cart[key];
+
+  renderShopInfo();
+  renderCart();
+  loadMenu();
+
+  const newUrl =
+    window.location.pathname + "?shop=" + shopKey;
+  window.history.replaceState({}, "", newUrl);
+}
+
+// ===============================
+// GOOGLE SHEET (MENU)
 // ===============================
 const sheetId = "1Fyyky7aA8sKCBMycHoc6Yyw0IqmonSX2iGlfQigTUTg";
 const sheetUrl =
@@ -167,7 +174,7 @@ function renderMenu(rows) {
 }
 
 // ===============================
-// CART ACTIONS (0.5 STEP)
+// CART ACTIONS
 // ===============================
 function addToCart(item, price, unit) {
   if (!cart[item]) {
@@ -260,19 +267,23 @@ function placeOrder() {
   message += "\n" + translations[currentLang].pickupTime + ": " + pickupTime;
   message += "\n\n" + translations[currentLang].note + "\nThank you.";
 
+  // 1️⃣ Track intent FIRST
+  trackOrderIntent(
+    message.replace(/\n/g, " | "),
+    total,
+    pickupTime
+  );
 
-trackOrderIntent(
-  message.replace(/\n/g, " | "),
-  total,
-  pickupTime
-);
+  // 2️⃣ Redirect to WhatsApp after short delay
   const url =
     "https://wa.me/" +
     shop.whatsapp +
     "?text=" +
     encodeURIComponent(message);
 
-  window.open(url);
+  setTimeout(() => {
+    window.open(url, "_blank");
+  }, 300);
 }
 
 // ===============================
@@ -283,8 +294,3 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
-
-
-
-
-
