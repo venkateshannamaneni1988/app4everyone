@@ -216,27 +216,33 @@ function renderMenu(rows) {
 
     if (available !== "yes") return;
 
-    menuDiv.innerHTML += `
-      <div class="product-card">
-        <img
-          src="images/${image}"
-          class="product-image"
-          alt="${item}"
-          onerror="this.src='images/placeholder.png'"
-        />
+    const qty =
+  cart[item]?.qty
+    ? cart[item].qty + " " + unit
+    : "0";
 
-        <div class="product-info">
-          <div class="product-name">${item}</div>
-          <div class="product-category">${category}</div>
-          <div class="product-price">₹${price} / ${unit}</div>
-        </div>
+menuDiv.innerHTML += `
+  <div class="product-card">
+    <img
+      src="images/${image}"
+      class="product-image"
+      alt="${item}"
+      onerror="this.src='images/placeholder.png'"
+    />
 
-        <div class="product-actions">
-          <button onclick="removeFromCart('${item}')">−</button>
-          <button onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
-        </div>
-      </div>
-    `;
+    <div class="product-info">
+      <div class="product-name">${item}</div>
+      <div class="product-category">${category}</div>
+      <div class="product-price">₹${price} / ${unit}</div>
+    </div>
+
+    <div class="product-actions">
+      <button onclick="removeFromCart('${item}')">−</button>
+      <span class="product-qty">${qty}</span>
+      <button onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
+    </div>
+  </div>
+`;
   });
 }
 
@@ -367,6 +373,7 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
 
