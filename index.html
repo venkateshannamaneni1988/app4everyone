@@ -25,6 +25,19 @@
   <option value="en">English</option>
   <option value="te">తెలుగు</option>
 </select>
+<div class="filters">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search products..."
+    oninput="applyFilters()"
+  />
+
+  <select id="categoryFilter" onchange="applyFilters()">
+    <option value="all">All Categories</option>
+  </select>
+</div>
+
 
 <h3 id="menuLabel">Menu</h3>
 <div id="menu">Loading menu...</div>
@@ -51,3 +64,4 @@
 
 </body>
 </html>
+
