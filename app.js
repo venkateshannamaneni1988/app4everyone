@@ -73,8 +73,20 @@ function trackOrderIntent(itemsText, total, pickupTime) {
 function initShopDropdown() {
   const select = document.getElementById("shopSelect");
   if (!select) return;
+
+  select.innerHTML = "";
+
+  Object.keys(shops).forEach(key => {
+    const option = document.createElement("option");
+    option.value = key;
+    option.textContent = shops[key].name;
+    select.appendChild(option);
+  });
+
+  // select current shop
   select.value = currentShopKey;
 }
+
 
 function onShopChange(shopKey) {
   if (!shops[shopKey]) return;
@@ -424,6 +436,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
