@@ -256,7 +256,11 @@ function placeOrder() {
   message += "\n" + translations[currentLang].total + ": Rs." + total;
   message += "\n" + translations[currentLang].pickupTime + ": " + pickupTime;
   message += "\n\n" + translations[currentLang].note + "\nThank you.";
-
+trackOrderIntent(
+  message.replace(/\n/g, " | "),
+  total,
+  pickupTime
+);
   const url =
     "https://wa.me/" +
     shop.whatsapp +
@@ -274,4 +278,5 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
