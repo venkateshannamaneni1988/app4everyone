@@ -19,6 +19,10 @@ const shops = {
   }
 };
 
+function generatePickupCode() {
+  return Math.floor(1000 + Math.random() * 9000);
+}
+
 // ===============================
 // READ SHOP FROM URL
 // ===============================
@@ -239,6 +243,8 @@ function setLanguage(lang) {
 // ===============================
 function placeOrder() {
   console.log("🚀 placeOrder called");
+  const pickupCode = generatePickupCode();
+
 
   if (Object.keys(cart).length === 0) {
     alert("Please add items to cart");
@@ -265,14 +271,17 @@ function placeOrder() {
 
   message += "\n" + translations[currentLang].total + ": Rs." + total;
   message += "\n" + translations[currentLang].pickupTime + ": " + pickupTime;
+  message += "\nPickup Code: " + pickupCode;
+message += "\n(Please show this code at pickup)";
+
   message += "\n\n" + translations[currentLang].note + "\nThank you.";
 
   // 1️⃣ Track intent FIRST
-  trackOrderIntent(
-    message.replace(/\n/g, " | "),
-    total,
-    pickupTime
-  );
+ trackOrderIntent(
+  message.replace(/\n/g, " | "),
+  total,
+  pickupTime + " | Code:" + pickupCode
+);
 
   // 2️⃣ Redirect to WhatsApp after short delay
   const url =
@@ -294,3 +303,4 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
