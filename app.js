@@ -1,3 +1,4 @@
+let allProducts = [];
 // ===============================
 // SHOPS CONFIG (SAME MENU SHEET)
 // ===============================
@@ -132,6 +133,50 @@ function renderShopInfo() {
   document.getElementById("shopInfo").innerText =
     shop.name + ", " + shop.location;
 }
+function applyFilters() {
+  const searchText =
+    document.getElementById("searchInput").value.toLowerCase();
+
+  const selectedCategory =
+    document.getElementById("categoryFilter").value;
+
+  const filtered = allProducts.filter(r => {
+    const item = r.c[0]?.v || "";
+    const category = r.c[1]?.v || "";
+    const available = r.c[4]?.v;
+
+    if (available !== "yes") return false;
+    if (
+      selectedCategory !== "all" &&
+      category !== selectedCategory
+    )
+      return false;
+
+    if (!item.toLowerCase().includes(searchText)) return false;
+
+    return true;
+  });
+
+  renderMenu(filtered);
+}
+
+function populateCategories(rows) {
+  const select = document.getElementById("categoryFilter");
+  if (!select) return;
+
+  const categories = new Set();
+
+  rows.forEach(r => {
+    const category = r.c[1]?.v;
+    if (category) categories.add(category);
+  });
+
+  select.innerHTML =
+    `<option value="all">All Categories</option>` +
+    [...categories]
+      .map(c => `<option value="${c}">${c}</option>`)
+      .join("");
+}
 
 // ===============================
 // LOAD MENU
@@ -141,9 +186,13 @@ function loadMenu() {
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substr(47).slice(0, -2));
-      renderMenu(json.table.rows);
+      allProducts = json.table.rows;
+
+      populateCategories(allProducts);
+      applyFilters(); // render first time
     });
 }
+
 
 // ===============================
 // RENDER MENU
@@ -153,10 +202,12 @@ function renderMenu(rows) {
   menuDiv.innerHTML = "";
 
   rows.forEach(r => {
-    const item = r.c[0]?.v;
-    const price = r.c[1]?.v;
-    const unit = r.c[2]?.v;
-    const available = r.c[3]?.v;
+    const item = r.c[0]?.v;     // item
+const category = r.c[1]?.v; // category (optional use)
+const price = r.c[2]?.v;
+const unit = r.c[3]?.v;
+const available = r.c[4]?.v;
+
 
     if (available !== "yes") return;
 
@@ -303,4 +354,5 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
