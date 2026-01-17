@@ -193,6 +193,13 @@ select, input[type="time"] {
   font-weight: 600;
   color: #333;
 }
+.product-qty {
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border-radius: 12px;
+}
+
+
 
 
 
