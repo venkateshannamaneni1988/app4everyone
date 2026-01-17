@@ -231,6 +231,8 @@ function setLanguage(lang) {
 // WHATSAPP ORDER
 // ===============================
 function placeOrder() {
+  console.log("🚀 placeOrder called");
+
   if (Object.keys(cart).length === 0) {
     alert("Please add items to cart");
     return;
@@ -281,6 +283,7 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
 
