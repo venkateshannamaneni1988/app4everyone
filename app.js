@@ -19,6 +19,7 @@ const shops = {
   }
 };
 function trackOrderIntent(itemsText, total, pickupTime) {
+   console.log("🔥 trackOrderIntent called");
   const formUrl =
     "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
 
@@ -256,6 +257,8 @@ function placeOrder() {
   message += "\n" + translations[currentLang].total + ": Rs." + total;
   message += "\n" + translations[currentLang].pickupTime + ": " + pickupTime;
   message += "\n\n" + translations[currentLang].note + "\nThank you.";
+
+
 trackOrderIntent(
   message.replace(/\n/g, " | "),
   total,
@@ -278,6 +281,7 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
 
