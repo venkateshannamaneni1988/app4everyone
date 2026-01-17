@@ -6,17 +6,23 @@ const shops = {
   kk: {
     name: "K K Store",
     location: "Dharmavaram",
-    whatsapp: "918904220620"
+    whatsapp: "917795562130"
   },
   svk: {
     name: "Sri Venkateswara Kirana Store",
     location: "Dharmavaram",
-    whatsapp: "918904220620"
+    whatsapp: "917795562130"
   },
   balaji: {
     name: "Balaji Kirana Store",
     location: "Dharmavaram",
-    whatsapp: "918904220620"
+    whatsapp: "917795562130"
+  },
+  VJFoods: {
+    name: "VJ FOODS",
+    location: "Bangalore",
+    whatsapp: "+91861824576",
+    sheetId: "1Fyyky7aA8sKCBMycHoc6Yyw0IqmonSX2iGlfQigTUTg"
   }
 };
 
@@ -91,11 +97,15 @@ function onShopChange(shopKey) {
 // ===============================
 // GOOGLE SHEET (MENU)
 // ===============================
-const sheetId = "1Fyyky7aA8sKCBMycHoc6Yyw0IqmonSX2iGlfQigTUTg";
-const sheetUrl =
-  "https://docs.google.com/spreadsheets/d/" +
-  sheetId +
-  "/gviz/tq?tqx=out:json";
+const DEFAULT_SHEET_ID  = "1Fyyky7aA8sKCBMycHoc6Yyw0IqmonSX2iGlfQigTUTg";
+function getSheetUrl() {
+  const sid = shop.sheetId || DEFAULT_SHEET_ID;
+  return (
+    "https://docs.google.com/spreadsheets/d/" +
+    sid +
+    "/gviz/tq?tqx=out:json"
+  );
+}
 
 // ===============================
 // LANGUAGE SETUP
@@ -182,7 +192,7 @@ function populateCategories(rows) {
 // LOAD MENU
 // ===============================
 function loadMenu() {
-  fetch(sheetUrl)
+ fetch(getSheetUrl())
     .then(res => res.text())
     .then(text => {
       const json = JSON.parse(text.substr(47).slice(0, -2));
@@ -414,6 +424,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
