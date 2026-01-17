@@ -21,8 +21,14 @@ const shops = {
   vjfoods: {
     name: "VJ FOODS",
     location: "Bangalore",
-    whatsapp: "+91861824576",
+    whatsapp: "91861824576",
     sheetId: "1BXpFSu7yCVs-VvMQtp0LzjEjU_D4_Y2yiCEYWihg8SY"
+  },
+  ssmedicals: {
+    name: "Shiridi sai medicals",
+    location: "Kothacheruvu",
+    whatsapp: "918790367637",
+    sheetId: "1CwQvpGm8jcpKToE9f5rrOX87Dgkv_4BAUq7ERnoEao8"
   }
 };
 
@@ -436,6 +442,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
