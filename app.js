@@ -256,14 +256,19 @@ function addToCart(item, price, unit) {
   } else {
     cart[item].qty += 0.5;
   }
+
   renderCart();
+  applyFilters(); // 🔴 FORCE IMMEDIATE MENU UPDATE
 }
 
 function removeFromCart(item) {
   if (!cart[item]) return;
+
   cart[item].qty -= 0.5;
   if (cart[item].qty <= 0) delete cart[item];
+
   renderCart();
+  applyFilters(); // 🔴 FORCE IMMEDIATE MENU UPDATE
 }
 
 // ===============================
@@ -372,7 +377,13 @@ renderShopInfo();
 loadMenu();
 setLanguage("en");
 initShopDropdown();
-setInterval(loadMenu, 30000);
+setInterval(() => {
+  // only refresh menu data, NOT UI state
+  loadMenu();
+}, 60000); // 1 minute is enough
+
+//setInterval(loadMenu, 30000);
+
 
 
 
