@@ -18,11 +18,11 @@ const shops = {
     location: "Dharmavaram",
     whatsapp: "917795562130"
   },
-  VJFoods: {
+  vjfoods: {
     name: "VJ FOODS",
     location: "Bangalore",
     whatsapp: "+91861824576",
-    sheetId: "1Fyyky7aA8sKCBMycHoc6Yyw0IqmonSX2iGlfQigTUTg"
+    sheetId: "1BXpFSu7yCVs-VvMQtp0LzjEjU_D4_Y2yiCEYWihg8SY"
   }
 };
 
@@ -424,6 +424,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
