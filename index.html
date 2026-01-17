@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>App4Everyone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#25D366">
+
+</head>
+<body>
+
+<h2>App4Everyone</h2>
+<p id="shopInfo"></p>
+<label for="shopSelect">Shop:</label>
+<select id="shopSelect" onchange="onShopChange(this.value)">
+  <option value="kk">K K Store</option>
+  <option value="svk">Sri Venkateswara Kirana Store</option>
+  <option value="balaji">Balaji Kirana Store</option>
+</select>
+
+<label for="lang">Language:</label>
+<select id="lang" onchange="setLanguage(this.value)">
+  <option value="en">English</option>
+  <option value="te">తెలుగు</option>
+</select>
+
+<h3 id="menuLabel">Menu</h3>
+<div id="menu">Loading menu...</div>
+
+<h3 id="cartLabel">Cart</h3>
+<div id="cart"></div>
+<div id="total" class="total">Total (approx): Rs.0</div>
+
+<label id="pickupLabel">Pickup Time</label><br>
+<input type="time" id="pickupTime">
+
+<button class="sticky-order" id="orderBtn" onclick="placeOrder()">
+  Order on WhatsApp
+</button>
+
+<p id="noteText" style="font-size:12px"></p>
+
+<script src="app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
+
+</body>
+</html>
