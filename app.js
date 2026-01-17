@@ -18,7 +18,26 @@ const shops = {
     whatsapp: "918904220620"
   }
 };
+function trackOrderIntent(itemsText, total, pickupTime) {
+  const formUrl =
+    "https://docs.google.com/forms/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
 
+  const data = new FormData();
+  data.append("entry.376479344", new Date().toISOString()); // timestamp
+  data.append("entry.361876883", shopKey);                 // shop_key
+  data.append("entry.1677708277", shop.name);               // shop_name
+  data.append("entry.1711734285", shop.location);           // city
+  data.append("entry.1764806945", itemsText);               // items
+  data.append("entry.777888999", total);                   // total
+  data.append("entry.1552637072", pickupTime);              // pickup_time
+  data.append("entry.1587844795", currentLang);             // language
+
+  fetch(formUrl, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+}
 function initShopDropdown() {
   const select = document.getElementById("shopSelect");
   if (!select) return;
@@ -255,3 +274,4 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
