@@ -201,32 +201,37 @@ function renderMenu(rows) {
   const menuDiv = document.getElementById("menu");
   menuDiv.innerHTML = "";
 
-  rows.forEach(r => {
-    const item = r.c[0]?.v;     // item
-const category = r.c[1]?.v; // category (optional use)
-const price = r.c[2]?.v;
-const unit = r.c[3]?.v;
-const available = r.c[4]?.v;
+  if (rows.length === 0) {
+    menuDiv.innerHTML = `<p class="empty">No products found</p>`;
+    return;
+  }
 
+  rows.forEach(r => {
+    const item = r.c[0]?.v;
+    const category = r.c[1]?.v;
+    const price = r.c[2]?.v;
+    const unit = r.c[3]?.v;
+    const available = r.c[4]?.v;
 
     if (available !== "yes") return;
 
     menuDiv.innerHTML += `
-      <div class="card">
-        <div class="item-row">
-          <div>
-            <div class="item-name">${item}</div>
-            <div class="item-price">Rs.${price}/${unit}</div>
-          </div>
-          <div>
-            <button class="qty-btn" onclick="removeFromCart('${item}')">-</button>
-            <button class="qty-btn" onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
-          </div>
+      <div class="product-card">
+        <div class="product-info">
+          <div class="product-name">${item}</div>
+          <div class="product-category">${category}</div>
+          <div class="product-price">₹${price} / ${unit}</div>
+        </div>
+
+        <div class="product-actions">
+          <button onclick="removeFromCart('${item}')">−</button>
+          <button onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
         </div>
       </div>
     `;
   });
 }
+
 
 // ===============================
 // CART ACTIONS
@@ -354,5 +359,6 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
