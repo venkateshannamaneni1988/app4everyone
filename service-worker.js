@@ -1,6 +1,10 @@
+const CACHE_NAME = "app4everyone-v10"; // 🔴 CHANGE VERSION EVERY UPDATE
+
 self.addEventListener("install", event => {
+  self.skipWaiting(); // activate immediately
+
   event.waitUntil(
-    caches.open("app4everyone-v1").then(cache => {
+    caches.open(CACHE_NAME).then(cache => {
       return cache.addAll([
         "./",
         "./index.html",
@@ -9,6 +13,20 @@ self.addEventListener("install", event => {
       ]);
     })
   );
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    )
+  );
+
+  self.clients.claim(); // take control immediately
 });
 
 self.addEventListener("fetch", event => {
