@@ -198,6 +198,24 @@ select, input[type="time"] {
   background: #f0f0f0;
   border-radius: 12px;
 }
+.sticky-cart {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #25d366;
+  color: white;
+  padding: 10px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+}
+
+.sticky-cart.hidden {
+  display: none;
+}
+
+
 
 
 
