@@ -318,6 +318,12 @@ if (itemCount > 0) {
 } else {
   stickyBar.style.display = "none";
 }
+// Optional: tap sticky bar to scroll to cart
+stickyBar.onclick = () => {
+  document
+    .getElementById("cart")
+    .scrollIntoView({ behavior: "smooth" });
+};
 
 
 }
@@ -408,6 +414,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
