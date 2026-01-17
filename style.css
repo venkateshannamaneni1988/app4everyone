@@ -199,21 +199,25 @@ select, input[type="time"] {
   border-radius: 12px;
 }
 .sticky-cart {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  right: 0;
+  z-index: 9999;
   background: #25d366;
   color: white;
-  padding: 10px 14px;
+  padding: 12px 14px;
   font-size: 16px;
   font-weight: 600;
-  display: flex;
-  justify-content: center;
-}
-
-.sticky-cart.hidden {
+  text-align: center;
   display: none;
 }
+
+/* Push content down so it doesn't hide under bar */
+body {
+  padding-top: 52px;
+}
+
 
 
 
