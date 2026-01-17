@@ -216,13 +216,10 @@ function renderMenu(rows) {
 
     if (available !== "yes") return;
 
-    const qty =
-  cart[item]?.qty
-    ? cart[item].qty + " " + unit
-    : "0";
+    const qty = cart[item]?.qty || 0;
 
 menuDiv.innerHTML += `
-  <div class="product-card">
+  <div class="product-card" data-item="${item}">
     <img
       src="images/${image}"
       class="product-image"
@@ -238,7 +235,9 @@ menuDiv.innerHTML += `
 
     <div class="product-actions">
       <button onclick="removeFromCart('${item}')">−</button>
-      <span class="product-qty">${qty}</span>
+      <span class="product-qty" id="qty-${item.replace(/\s+/g,'')}">
+        ${qty > 0 ? qty + " " + unit : ""}
+      </span>
       <button onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
     </div>
   </div>
@@ -250,6 +249,16 @@ menuDiv.innerHTML += `
 // ===============================
 // CART ACTIONS
 // ===============================
+function updateQtyUI(item, unit) {
+  const el = document.getElementById(
+    "qty-" + item.replace(/\s+/g,'')
+  );
+  if (!el) return;
+
+  const qty = cart[item]?.qty || 0;
+  el.innerText = qty > 0 ? qty + " " + unit : "";
+}
+
 function addToCart(item, price, unit) {
   if (!cart[item]) {
     cart[item] = { qty: 0.5, price, unit };
@@ -257,8 +266,8 @@ function addToCart(item, price, unit) {
     cart[item].qty += 0.5;
   }
 
-  renderCart();
-  applyFilters(); // 🔴 FORCE IMMEDIATE MENU UPDATE
+  updateQtyUI(item, unit);   // 🔥 INSTANT
+  renderCart();              // cart summary only
 }
 
 function removeFromCart(item) {
@@ -267,8 +276,8 @@ function removeFromCart(item) {
   cart[item].qty -= 0.5;
   if (cart[item].qty <= 0) delete cart[item];
 
+  updateQtyUI(item, cart[item]?.unit || "");
   renderCart();
-  applyFilters(); // 🔴 FORCE IMMEDIATE MENU UPDATE
 }
 
 // ===============================
@@ -383,6 +392,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
