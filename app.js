@@ -303,7 +303,22 @@ function renderCart() {
   });
 
   totalDiv.innerText =
-    translations[currentLang].total + ": Rs." + total;
+  translations[currentLang].total + ": Rs." + total;
+
+// 🔥 Sticky cart update
+const stickyBar = document.getElementById("stickyCartBar");
+const stickyText = document.getElementById("stickyCartText");
+
+const itemCount = Object.keys(cart).length;
+
+if (itemCount > 0) {
+  stickyBar.classList.remove("hidden");
+  stickyText.innerText =
+    "🛒 " + itemCount + " items | Total ₹" + total;
+} else {
+  stickyBar.classList.add("hidden");
+}
+
 }
 
 // ===============================
@@ -392,6 +407,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
