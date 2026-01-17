@@ -20,7 +20,7 @@ const shops = {
 };
 function trackOrderIntent(itemsText, total, pickupTime) {
   const formUrl =
-    "https://docs.google.com/forms/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
+    "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeFC7MBahIfrH4GsIXWdILKfzs83yfihtQ7Uw7aJiKS4JGfXw/formResponse";
 
   const data = new FormData();
   data.append("entry.376479344", new Date().toISOString()); // timestamp
@@ -278,5 +278,6 @@ loadMenu();
 setLanguage("en");
 initShopDropdown();
 setInterval(loadMenu, 30000);
+
 
 
