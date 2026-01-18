@@ -276,9 +276,6 @@ function renderMenu(rows) {
 
     const qty = cart[item]?.qty || 0;
 
-    const images = (r.c[5]?.v || "placeholder.png")
-  .split(",")
-  .map(i => i.trim());
 
 const images = (r.c[5]?.v || "placeholder.png")
   .split(",")
@@ -488,6 +485,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
