@@ -49,6 +49,19 @@
 <label id="pickupLabel">Pickup Time</label><br>
 <input type="time" id="pickupTime">
 
+<div class="delivery-section">
+  <label for="deliveryAddress">
+    <b>Delivery Address (Optional)</b>
+  </label>
+
+  <textarea
+    id="deliveryAddress"
+    rows="3"
+    placeholder="House No, Street, Area, Landmark..."
+  ></textarea>
+</div>
+
+
 <button class="sticky-order" id="orderBtn" onclick="placeOrder()">
   Order on WhatsApp
 </button>

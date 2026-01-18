@@ -233,6 +233,19 @@ select, input[type="time"] {
 .gallery-btn.right {
   right: 10px;
 }
+.delivery-section {
+  margin: 15px 0;
+}
+
+#deliveryAddress {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  resize: none;
+}
 
 .image-modal {
   display: none;
