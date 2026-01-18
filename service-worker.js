@@ -1,4 +1,4 @@
-const CACHE_NAME = "app4everyone-v28"; // 🔴 CHANGE VERSION EVERY UPDATE
+const CACHE_NAME = "app4everyone-v29"; // 🔴 CHANGE VERSION EVERY UPDATE
 
 self.addEventListener("install", event => {
   self.skipWaiting(); // activate immediately

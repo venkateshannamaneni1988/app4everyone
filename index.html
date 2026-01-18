@@ -61,9 +61,12 @@
     navigator.serviceWorker.register("service-worker.js");
   }
 </script>
-<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+<div id="imageModal" class="image-modal">
+  <button class="gallery-btn left" onclick="prevImage(event)">‹</button>
   <img id="modalImage" />
+  <button class="gallery-btn right" onclick="nextImage(event)">›</button>
 </div>
+
 
 </body>
 </html>

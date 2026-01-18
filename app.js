@@ -77,6 +77,13 @@ function trackOrderIntent(itemsText, total, pickupTime) {
 
 let galleryImages = [];
 let galleryIndex = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("imageModal");
+  if (modal) {
+    modal.onclick = closeImageModal;
+  }
+});
+
 
 function openGalleryFromElement(el) {
   const images = el.dataset.images
@@ -96,9 +103,24 @@ function showGalleryImage() {
   modal.style.display = "flex";
 }
 
+function nextImage(e) {
+  e.stopPropagation();
+  galleryIndex = (galleryIndex + 1) % galleryImages.length;
+  showGalleryImage();
+}
+
+function prevImage(e) {
+  e.stopPropagation();
+  galleryIndex =
+    (galleryIndex - 1 + galleryImages.length) %
+    galleryImages.length;
+  showGalleryImage();
+}
+
 function closeImageModal() {
   document.getElementById("imageModal").style.display = "none";
 }
+
 
 
 //============End===========================

@@ -213,6 +213,43 @@ select, input[type="time"] {
   max-height: 90%;
   border-radius: 8px;
 }
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 28px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.gallery-btn.left {
+  left: 10px;
+}
+
+.gallery-btn.right {
+  right: 10px;
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
 .sticky-cart {
   position: fixed;
   top: 0;
