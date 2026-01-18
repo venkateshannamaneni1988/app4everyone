@@ -273,6 +273,8 @@ function renderMenu(rows) {
     const image = r.c[5]?.v || "placeholder.png";
 
     if (available !== "yes") return;
+    const safeId = item.toLowerCase().replace(/[^a-z0-9]/g, "");
+
 
     const qty = cart[item]?.qty || 0;
 
@@ -485,6 +487,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
