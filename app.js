@@ -78,21 +78,28 @@ function trackOrderIntent(itemsText, total, pickupTime) {
 let galleryImages = [];
 let galleryIndex = 0;
 
-function openGallery(images) {
-  galleryImages = images.slice(0, 3); // 🔒 max 3
+function openGalleryFromElement(el) {
+  const images = el.dataset.images
+    ? el.dataset.images.split(",")
+    : ["placeholder.png"];
+
+  galleryImages = images;
   galleryIndex = 0;
   showGalleryImage();
 }
 
 function showGalleryImage() {
+  const modal = document.getElementById("imageModal");
   const img = document.getElementById("modalImage");
+
   img.src = "images/" + galleryImages[galleryIndex];
-  document.getElementById("imageModal").style.display = "flex";
+  modal.style.display = "flex";
 }
 
 function closeImageModal() {
   document.getElementById("imageModal").style.display = "none";
 }
+
 
 //============End===========================
 
@@ -273,22 +280,23 @@ function renderMenu(rows) {
   .split(",")
   .map(i => i.trim());
 
-const mainImage = images[0];
+const images = (r.c[5]?.v || "placeholder.png")
+  .split(",")
+  .map(i => i.trim())
+  .slice(0, 3); // max 3 images
 
-<img
-  src="images/${mainImage}"
-  class="product-image"
-  onclick='openGallery(${JSON.stringify(images)})'
-  onerror="this.src='images/placeholder.png'"
-/>
+const mainImage = images[0];
+const imagesData = images.join(",");
+
 
 
 menuDiv.innerHTML += `
-  <div class="product-card" data-item="${item}">
+  <div class="product-card">
     <img
-      src="images/${image}"
+      src="images/${mainImage}"
       class="product-image"
-      alt="${item}"
+      data-images="${imagesData}"
+      onclick="openGalleryFromElement(this)"
       onerror="this.src='images/placeholder.png'"
     />
 
@@ -300,13 +308,14 @@ menuDiv.innerHTML += `
 
     <div class="product-actions">
       <button onclick="removeFromCart('${item}')">−</button>
-      <span class="product-qty" id="qty-${item.replace(/\s+/g,'')}">
-        ${qty > 0 ? qty + " " + unit : ""}
+      <span class="product-qty" id="qty-${safeId}">
+        ${cart[item]?.qty ? cart[item].qty + " " + unit : ""}
       </span>
       <button onclick="addToCart('${item}', ${price}, '${unit}')">+</button>
     </div>
   </div>
 `;
+
   });
 }
 
@@ -479,6 +488,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
