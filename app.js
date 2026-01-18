@@ -73,6 +73,29 @@ function trackOrderIntent(itemsText, total, pickupTime) {
   });
 }
 
+//============= Gallery Logic============
+
+let galleryImages = [];
+let galleryIndex = 0;
+
+function openGallery(images) {
+  galleryImages = images.slice(0, 3); // 🔒 max 3
+  galleryIndex = 0;
+  showGalleryImage();
+}
+
+function showGalleryImage() {
+  const img = document.getElementById("modalImage");
+  img.src = "images/" + galleryImages[galleryIndex];
+  document.getElementById("imageModal").style.display = "flex";
+}
+
+function closeImageModal() {
+  document.getElementById("imageModal").style.display = "none";
+}
+
+//============End===========================
+
 // ===============================
 // SHOP DROPDOWN
 // ===============================
@@ -245,6 +268,20 @@ function renderMenu(rows) {
     if (available !== "yes") return;
 
     const qty = cart[item]?.qty || 0;
+
+    const images = (r.c[5]?.v || "placeholder.png")
+  .split(",")
+  .map(i => i.trim());
+
+const mainImage = images[0];
+
+<img
+  src="images/${mainImage}"
+  class="product-image"
+  onclick='openGallery(${JSON.stringify(images)})'
+  onerror="this.src='images/placeholder.png'"
+/>
+
 
 menuDiv.innerHTML += `
   <div class="product-card" data-item="${item}">
@@ -442,6 +479,7 @@ setInterval(() => {
 }, 60000); // 1 minute is enough
 
 //setInterval(loadMenu, 30000);
+
 
 
 
