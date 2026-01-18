@@ -31,6 +31,9 @@ const shops = {
     sheetId: "1CwQvpGm8jcpKToE9f5rrOX87Dgkv_4BAUq7ERnoEao8"
   }
 };
+function generateOrderId() {
+  return "A4E-" + Math.floor(1000 + Math.random() * 9000);
+}
 
 function generatePickupCode() {
   return Math.floor(1000 + Math.random() * 9000);
@@ -77,6 +80,13 @@ function trackOrderIntent(itemsText, total, pickupTime) {
 
 let galleryImages = [];
 let galleryIndex = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("imageModal");
+  if (modal) {
+    modal.onclick = closeImageModal;
+  }
+});
+
 
 function openGalleryFromElement(el) {
   const images = el.dataset.images
@@ -96,9 +106,24 @@ function showGalleryImage() {
   modal.style.display = "flex";
 }
 
+function nextImage(e) {
+  e.stopPropagation();
+  galleryIndex = (galleryIndex + 1) % galleryImages.length;
+  showGalleryImage();
+}
+
+function prevImage(e) {
+  e.stopPropagation();
+  galleryIndex =
+    (galleryIndex - 1 + galleryImages.length) %
+    galleryImages.length;
+  showGalleryImage();
+}
+
 function closeImageModal() {
   document.getElementById("imageModal").style.display = "none";
 }
+
 
 
 //============End===========================
@@ -421,20 +446,38 @@ function setLanguage(lang) {
 // WHATSAPP ORDER
 // ===============================
 function placeOrder() {
-  console.log("🚀 placeOrder called");
-  const pickupCode = generatePickupCode();
-
-
   if (Object.keys(cart).length === 0) {
     alert("Please add items to cart");
     return;
   }
 
-  let message =
-    "Hello " + shop.name + ",\n\n" +
-    (currentLang === "te" ? "ఆర్డర్ వివరాలు:\n" : "Order details:\n");
+  const orderId = generateOrderId();
+  const dateStr = new Date().toLocaleString();
 
+  const pickupTime =
+    document.getElementById("pickupTime")?.value || "Not specified";
+
+  const address =
+    document.getElementById("deliveryAddress")?.value.trim();
+
+  let message = "";
   let total = 0;
+  let index = 1;
+
+  // =====================
+  // HEADER
+  // =====================
+  message += "🧾 ORDER INVOICE\n";
+  message += "====================\n";
+  message += "Shop: " + shop.name + "\n";
+  message += "Order ID: " + orderId + "\n";
+  message += "Date: " + dateStr + "\n";
+  message += "====================\n\n";
+
+  // =====================
+  // ITEMS
+  // =====================
+  message += "Items:\n";
 
   Object.keys(cart).forEach(item => {
     const c = cart[item];
@@ -442,37 +485,77 @@ function placeOrder() {
     total += itemTotal;
 
     message +=
-      "- " + item + ": " + c.qty + " " + c.unit + " - Rs." + itemTotal + "\n";
+      index +
+      ". " +
+      item +
+      "  " +
+      c.qty +
+      " " +
+      c.unit +
+      "  ₹" +
+      itemTotal +
+      "\n";
+
+    index++;
   });
 
-  const pickupTime =
-    document.getElementById("pickupTime").value || "Not specified";
+  // =====================
+  // TOTAL
+  // =====================
+  message += "\n--------------------\n";
+  message += "Subtotal: ₹" + total + "\n";
+  message += "--------------------\n\n";
 
-  message += "\n" + translations[currentLang].total + ": Rs." + total;
-  message += "\n" + translations[currentLang].pickupTime + ": " + pickupTime;
-  message += "\nPickup Code: " + pickupCode;
-message += "\n(Please show this code at pickup)";
+  // =====================
+  // DELIVERY / PICKUP
+  // =====================
+  if (address) {
+    message += "Delivery Address:\n";
+    message += address + "\n\n";
+  } else {
+    message += "Delivery: Pickup from shop\n\n";
+  }
 
-  message += "\n\n" + translations[currentLang].note + "\nThank you.";
+  message += "Pickup / Delivery Time: " + pickupTime + "\n\n";
 
-  // 1️⃣ Track intent FIRST
- trackOrderIntent(
-  message.replace(/\n/g, " | "),
-  total,
-  pickupTime + " | Code:" + pickupCode
-);
+  // =====================
+  // FOOTER
+  // =====================
+  message += "Please confirm delivery availability & charges.\n";
+  message += "Thank you 🙏";
 
-  // 2️⃣ Redirect to WhatsApp after short delay
+  // =====================
+  // TRACK ORDER INTENT (OPTIONAL – KEEP IF YOU HAVE IT)
+  // =====================
+  if (typeof trackOrderIntent === "function") {
+    trackOrderIntent(
+      message.replace(/\n/g, " | "),
+      total,
+      pickupTime
+    );
+  }
+
+  // =====================
+  // OPEN WHATSAPP
+  // =====================
   const url =
     "https://wa.me/" +
     shop.whatsapp +
     "?text=" +
     encodeURIComponent(message);
 
+  window.open(url);
+
+  // =====================
+  // CLEAR CART AFTER ORDER
+  // =====================
   setTimeout(() => {
-    window.open(url, "_blank");
-  }, 300);
+    for (let key in cart) delete cart[key];
+    clearCartStorage();
+    renderCart();
+  }, 1000);
 }
+
 
 // ===============================
 // INIT
